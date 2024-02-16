@@ -25,11 +25,25 @@ const Calculator = () => {
     setInput('');
     setCurrentCalculation('');
   };
+  const handleKeyDown = (event) => {
+    const key = event.key;
+
+    if (/[0-9+\-*/.]/.test(key)) {
+      // Allow only numeric and operator keys
+      handleButtonClick(key);
+    } else if (key === 'Enter') {
+      // Handle Enter key as "=" for calculation
+      handleCalculate();
+    } else if (key === 'Backspace') {
+      // Handle Backspace key as "C" for clearing
+      handleClear();
+    }
+  };
 
 
   return (
-    <div className="calculator">
-            <div className="current-calculation">{result}</div>
+    <div className="calculator" tabIndex="0" onKeyDown={handleKeyDown}>
+      <div className="current-calculation">{result}</div>
       <div className="display">{input}</div>
       <div className="buttons">
 
@@ -52,6 +66,7 @@ const Calculator = () => {
         <button onClick={handleClear}>C</button>
       </div>
     </div>
+
   );
 };
 
