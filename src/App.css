@@ -1,6 +1,6 @@
 .calculator {
-  width: 218px;
-  padding: 10px;
+  width: 210px;
+  padding: 4px;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: black;
@@ -29,15 +29,17 @@
 }
 
 
-td:hover {
+.calculator-buttons td:hover {
   background-color: #343a40;
 }
 .calculator-history{
-  width: 200px;
+  width: 300px;
   margin-bottom: 10px;
   padding: 10px;
   border: 1px solid #ddd;
-  min-height: 450px;
-  margin-top: 100px;
+  min-height: 397px;
+  margin-top: 133px;
 }
-
+.operator-btn:hover{
+background-color:#cd9c06 !important;
+}
