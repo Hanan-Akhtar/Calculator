@@ -1,25 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './App.css';
 
 const Calculator = () => {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState([]);
-// check operator 
-  const isOperator = (char) => /[+\-*/]/.test(char);
+// check operator using array
+const isOperator = (char) => ['+', '-', '*', '/'].includes(char);
+
 
   const calculateResult = (expression) => {
     try {
       let result = 0;
       let currentOperator = '+';
       let currentNumber = '';
-
+      console.log(expression,"expression---------------")
       for (let i = 0; i < expression.length; i++) {
         const char = expression[i];
-
+        console.log(char,"char----------")
         if (/[0-9.]/.test(char)) {
           currentNumber += char;
         } else if (isOperator(char)) {
-          result = performOperation(result, parseFloat(currentNumber), currentOperator);
+          console.log(`result: ${result}, currentNumber: ${currentNumber}, currentOperator: ${currentOperator}`);
+          
+          // Check if there is a valid operator and number combination
+          if (currentNumber !== '') {
+            result = performOperation(result, parseFloat(currentNumber), currentOperator);
+            console.log(`result after operation: ${result}`);
+          }
+          
           currentNumber = '';
           currentOperator = char;
         }
@@ -27,7 +35,7 @@ const Calculator = () => {
 
       // Handle the last number in the expression
       result = performOperation(result, parseFloat(currentNumber), currentOperator);
-
+      console.log(`final result: ${result}`);
       return result.toString();
     } catch (error) {
       return 'Error';
@@ -35,6 +43,11 @@ const Calculator = () => {
   };
 
   const performOperation = (currentResult, number, operator) => {
+    console.log(currentResult,"currentResult")
+    console.log(number,"number")
+    console.log(operator,"Operator")
+
+ 
     switch (operator) {
       case '+':
         return currentResult + number;
@@ -55,7 +68,6 @@ const Calculator = () => {
   
     // Check if the new input is an operator and the last input was also an operator
     if (isOperator(value) && lastInputIsOperator) {
-      // Replace the last operator with the new one
       setInput((prevInput) => prevInput.slice(0, -1) + value);
     } else {
       setInput((prevInput) => prevInput + value);
@@ -65,6 +77,7 @@ const Calculator = () => {
   const handleCalculate = () => {
     const result = calculateResult(input);
     setHistory((prevHistory) => [...prevHistory, `${input} = ${result}`]);
+    console.log(history,"History ---------------")
     setInput(result);
   };
 
@@ -77,22 +90,25 @@ const Calculator = () => {
 
   const handleKeyDown = (event) => {
     const key = event.key;
-
     if (/[0-9+\-*/.]/.test(key)) {
-      // Allow only numeric and operator keys
       handleButtonClick(key);
     } else if (key === 'Enter') {
-      // Handle Enter key as "=" for calculation
       handleCalculate();
     } else if (key === 'Backspace') {
-      // Handle Backspace key as "C" for clearing
       handleClear();
     }
   };
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]); 
+
 
   return (
     <div className='row'>
-    <div className="calculator col-lg-6" tabIndex="0" onKeyDown={handleKeyDown}>
+    <div className="calculator col-lg-6" >
       <div className="calculator-container">
         <div className="calculator-grid">
           <div className="calculator-display">
