@@ -7,7 +7,6 @@ const Calculator = () => {
 // check operator using array
 const isOperator = (char) => ['+', '-', '*', '/'].includes(char);
 
-
   const calculateResult = (expression) => {
     try {
       let result = 0;
@@ -65,6 +64,7 @@ const isOperator = (char) => ['+', '-', '*', '/'].includes(char);
   const handleButtonClick = (value) => {
     // Check if the last input is an operator
     const lastInputIsOperator = isOperator(input[input.length - 1]);
+    console.log((input[input.length - 1]),'input---------')
   
     // Check if the new input is an operator and the last input was also an operator
     if (isOperator(value) && lastInputIsOperator) {
@@ -90,6 +90,7 @@ const isOperator = (char) => ['+', '-', '*', '/'].includes(char);
 
   const handleKeyDown = (event) => {
     const key = event.key;
+    console.log(key,"key-------")
     if (/[0-9+\-*/.]/.test(key)) {
       handleButtonClick(key);
     } else if (key === 'Enter') {
